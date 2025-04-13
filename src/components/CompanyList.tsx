@@ -1,12 +1,12 @@
 
 import React from 'react';
 import CompanyCard from './CompanyCard';
-import { Company } from '@/data/companies';
+import { SponsorshipCompany } from '@/types';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, AlertCircle } from 'lucide-react';
 
 interface CompanyListProps {
-  companies: Company[];
+  companies: SponsorshipCompany[];
   isLoading: boolean;
   error: string | null;
 }

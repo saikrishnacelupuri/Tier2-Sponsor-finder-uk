@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from 'react';
-import { Company, companies } from '../data/companies';
+import { SponsorshipCompany } from '../types';
+import { fetchSponsors } from '../services/sponsorshipService';
 
 interface UseCompaniesProps {
   searchTerm: string;
@@ -15,55 +15,72 @@ export const useCompanies = ({
   selectedLocation,
   selectedStatus
 }: UseCompaniesProps) => {
-  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
+  const [allCompanies, setAllCompanies] = useState<SponsorshipCompany[]>([]);
+  const [filteredCompanies, setFilteredCompanies] = useState<SponsorshipCompany[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAndFilterCompanies = async () => {
+    const getCompanies = async () => {
       setIsLoading(true);
       setError(null);
       
       try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Filter companies based on search term and filters
-        let results = [...companies];
-        
-        // Filter by search term
-        if (searchTerm) {
-          results = results.filter(company => 
-            company.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-        
-        // Filter by sector
-        if (selectedSector && selectedSector !== 'All') {
-          results = results.filter(company => company.sector === selectedSector);
-        }
-        
-        // Filter by location
-        if (selectedLocation && selectedLocation !== 'All') {
-          results = results.filter(company => company.location === selectedLocation);
-        }
-        
-        // Filter by sponsorship status
-        if (selectedStatus && selectedStatus !== 'All') {
-          results = results.filter(company => company.sponsorshipStatus === selectedStatus);
-        }
-        
-        setFilteredCompanies(results);
+        const sponsors = await fetchSponsors();
+        setAllCompanies(sponsors);
       } catch (err) {
-        setError('Failed to fetch companies data');
-        console.error('Error fetching companies:', err);
+        setError('Failed to fetch sponsors data. Please try again later.');
+        console.error('Error fetching sponsors:', err);
       } finally {
         setIsLoading(false);
       }
     };
     
-    fetchAndFilterCompanies();
-  }, [searchTerm, selectedSector, selectedLocation, selectedStatus]);
+    getCompanies();
+  }, []);
+
+  useEffect(() => {
+    if (allCompanies.length === 0) return;
+    
+    setIsLoading(true);
+    
+    try {
+      let results = [...allCompanies];
+      
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        results = results.filter(company => 
+          company.name.toLowerCase().includes(term)
+        );
+      }
+      
+      if (selectedSector && selectedSector !== 'All') {
+        results = results.filter(company => company.industry === selectedSector);
+      }
+      
+      if (selectedLocation && selectedLocation !== 'All') {
+        results = results.filter(company => company.town === selectedLocation);
+      }
+      
+      if (selectedStatus === 'Active') {
+        results = results;
+      } else if (selectedStatus === 'Inactive') {
+        results = [];
+      }
+      
+      setFilteredCompanies(results);
+    } catch (err) {
+      setError('Error filtering companies data');
+      console.error('Error filtering companies:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchTerm, selectedSector, selectedLocation, selectedStatus, allCompanies]);
   
-  return { companies: filteredCompanies, isLoading, error };
+  return { 
+    companies: filteredCompanies, 
+    allCompanies,
+    isLoading, 
+    error 
+  };
 };

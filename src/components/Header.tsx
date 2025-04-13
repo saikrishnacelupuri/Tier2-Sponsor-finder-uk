@@ -7,7 +7,10 @@ const Header: React.FC = () => {
     <header className="border-b">
       <div className="container py-4 flex items-center space-x-2">
         <Globe className="h-6 w-6 text-primary" />
-        <h1 className="text-2xl font-bold">UK Visa Sponsorship Finder</h1>
+        <div>
+          <h1 className="text-2xl font-bold">UK Visa Sponsorship Finder</h1>
+          <p className="text-sm text-muted-foreground">Official UK Government Licensed Sponsors Data</p>
+        </div>
       </div>
     </header>
   );

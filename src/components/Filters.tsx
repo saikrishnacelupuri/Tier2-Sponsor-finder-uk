@@ -2,8 +2,8 @@
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { sectors, locations, sponsorshipStatuses } from '@/data/companies';
 import { RefreshCw } from 'lucide-react';
+import { SponsorshipCompany } from '@/types';
 
 interface FiltersProps {
   selectedSector: string;
@@ -13,6 +13,8 @@ interface FiltersProps {
   selectedStatus: string;
   setSelectedStatus: (status: string) => void;
   resetFilters: () => void;
+  sectors: string[];
+  locations: string[];
 }
 
 const Filters: React.FC<FiltersProps> = ({
@@ -22,17 +24,19 @@ const Filters: React.FC<FiltersProps> = ({
   setSelectedLocation,
   selectedStatus,
   setSelectedStatus,
-  resetFilters
+  resetFilters,
+  sectors,
+  locations
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
       <div className="w-full">
         <Select value={selectedSector} onValueChange={setSelectedSector}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Sector" />
+            <SelectValue placeholder="Select Industry" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All Sectors</SelectItem>
+          <SelectContent className="max-h-[300px]">
+            <SelectItem value="All">All Industries</SelectItem>
             {sectors.map((sector) => (
               <SelectItem key={sector} value={sector}>{sector}</SelectItem>
             ))}
@@ -43,10 +47,10 @@ const Filters: React.FC<FiltersProps> = ({
       <div className="w-full">
         <Select value={selectedLocation} onValueChange={setSelectedLocation}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Location" />
+            <SelectValue placeholder="Select Town" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All Locations</SelectItem>
+          <SelectContent className="max-h-[300px]">
+            <SelectItem value="All">All Towns</SelectItem>
             {locations.map((location) => (
               <SelectItem key={location} value={location}>{location}</SelectItem>
             ))}
@@ -60,9 +64,9 @@ const Filters: React.FC<FiltersProps> = ({
             <SelectValue placeholder="Sponsorship Status" />
           </SelectTrigger>
           <SelectContent>
-            {sponsorshipStatuses.map((status) => (
-              <SelectItem key={status} value={status}>{status}</SelectItem>
-            ))}
+            <SelectItem value="All">All Statuses</SelectItem>
+            <SelectItem value="Active">Active</SelectItem>
+            <SelectItem value="Inactive">Inactive</SelectItem>
           </SelectContent>
         </Select>
       </div>

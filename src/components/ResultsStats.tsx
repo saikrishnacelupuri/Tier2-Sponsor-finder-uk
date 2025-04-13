@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Company } from '@/data/companies';
+import { SponsorshipCompany } from '@/types';
 
 interface ResultsStatsProps {
-  filteredCompanies: Company[];
+  filteredCompanies: SponsorshipCompany[];
   totalCompanies: number;
   isLoading: boolean;
 }
@@ -11,16 +11,15 @@ interface ResultsStatsProps {
 const ResultsStats: React.FC<ResultsStatsProps> = ({ 
   filteredCompanies, 
   totalCompanies,
-  isLoading 
+  isLoading
 }) => {
   if (isLoading) {
-    return <div className="text-muted-foreground">Loading results...</div>;
+    return <div className="pb-4 text-muted-foreground">Loading companies...</div>;
   }
 
   return (
-    <div className="text-muted-foreground pb-2">
-      Showing {filteredCompanies.length} {filteredCompanies.length === 1 ? 'company' : 'companies'} 
-      {filteredCompanies.length !== totalCompanies ? ` (filtered from ${totalCompanies})` : ''}
+    <div className="pb-4 text-muted-foreground">
+      Showing {filteredCompanies.length} of {totalCompanies} companies
     </div>
   );
 };
