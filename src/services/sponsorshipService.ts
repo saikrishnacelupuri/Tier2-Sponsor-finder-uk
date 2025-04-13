@@ -2,8 +2,9 @@
 import { SponsorshipCompany } from '../types';
 
 const CORS_PROXY = 'https://corsproxy.io/?';
-const SPONSORSHIP_REGISTER_URL = 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1169648/2023-04-11_-_Worker_and_Temporary_Worker.csv';
-const LAST_UPDATED_DATE = 'April 11, 2023'; // This should be updated when the data source changes
+// Updated URL to the latest version of the sponsorship register
+const SPONSORSHIP_REGISTER_URL = 'https://assets.publishing.service.gov.uk/media/679ac9d47292510013eb6dea/2024-04-11_Worker_and_Temporary_Worker.csv';
+const LAST_UPDATED_DATE = 'April 11, 2024'; // Updated date to reflect current data
 
 export const fetchSponsors = async (): Promise<SponsorshipCompany[]> => {
   try {

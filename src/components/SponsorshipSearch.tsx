@@ -79,6 +79,7 @@ const SponsorshipSearch: React.FC = () => {
           filteredCompanies={filteredCompanies} 
           totalCompanies={allCompanies.length}
           isLoading={isLoading}
+          error={error}
         />
         <CompanyList 
           companies={filteredCompanies} 
